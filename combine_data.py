@@ -137,8 +137,8 @@ plt.show()
 
 # metric 2: average path length
 
-# i think the average path is 1 within each component since the path from one node
-# to another (of length 1 edge) is always the shortest path since our network contains
+# the average path is 1 within each component since the path from one node to
+# another (of length 1 edge) is always the shortest path since our network contains
 # all possible combinations between every individual that works for the same company
 connected_comp_subgraphs = (G.subgraph(c) for c in nx.connected_components(G))
 for g in connected_comp_subgraphs: 
@@ -149,6 +149,9 @@ for g in connected_comp_subgraphs:
 
 
 # additionally, here's the size of the largest component in terms of n and m
+# this metric might be more useful for our analysis, rather than metrics like
+# average path length or clustering coefficient. for example, a potential question 
+# that this could answer is, "of our connections, where are they most likely to currently work?"
 connected_comp_subgraphs = (G.subgraph(c) for c in nx.connected_components(G))
 largest_subgraph = max(connected_comp_subgraphs, key = len)
 print("The largest component has", largest_subgraph)
@@ -177,7 +180,25 @@ print("The average clustering coefficient for the graph is", nx.average_clusteri
 # In[ ]:
 
 
-# metric 4: C(k)
+# metric 4: C(k) (average degree)
 
-# in progress!
+connected_comp_subgraphs = (G.subgraph(c) for c in nx.connected_components(G))
+for g in connected_comp_subgraphs: 
+    print(g, "has an average degree of", nx.number_of_edges(g))
 
+print("The average degree of all components combined is", round(2 * nx.number_of_edges(G) / nx.number_of_nodes(G), 0))
+
+
+# In[ ]:
+    
+
+# metric 5: number of nodes and edges
+
+print("The total number of nodes and edges is", nx.number_of_nodes(G), "and", nx.number_of_edges(G), ", respectively")
+
+# In[ ]:
+    
+    
+# other questions that could be interesting to answer: what proportion of individuals overlap in their
+# company / education / job title connections (i.e. what proportion of those are connected both by company
+# and education)?

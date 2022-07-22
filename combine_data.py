@@ -12,6 +12,7 @@ import math
 def rstr(df): return df.shape, df.apply(lambda x: [x.unique()])
 import networkx as nx
 from matplotlib import pyplot as plt
+from networkx.algorithms.community import greedy_modularity_communities
 
 
 # In[4]:
@@ -19,7 +20,8 @@ from matplotlib import pyplot as plt
 
 # path may need to be changed
 # data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/final-proj/"
-data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
+#data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
+data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
 
 extension = 'csv'
 os.chdir(data_dir)
@@ -104,7 +106,7 @@ for node1 in nodes[:n]:
 # In[15]:
 
 
-display(employer_network.tail())
+#display(employer_network.tail())
 
 
 # In[48]:
@@ -196,9 +198,14 @@ print("The average degree of all components combined is", round(2 * nx.number_of
 
 print("The total number of nodes and edges is", nx.number_of_nodes(G), "and", nx.number_of_edges(G), ", respectively")
 
-# In[ ]:
-    
+
+# metric 6: number and size of communities in the graph
+
+c = greedy_modularity_communities(G)
+print('Number of ommmunities in the network:', len(c))
+print(c)
     
 # other questions that could be interesting to answer: what proportion of individuals overlap in their
 # company / education / job title connections (i.e. what proportion of those are connected both by company
 # and education)?
+

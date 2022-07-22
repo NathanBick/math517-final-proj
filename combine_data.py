@@ -81,15 +81,15 @@ test.values[0]
 
 # In[12]:
 
-
+'''
 employer_network = pd.DataFrame()
 n = 100
 # loop through the unqiue node values. Create a row in the network. 
 # For each unique node, loop through all the nodes again, see if the two have the same employer. 
 # if they do have the same employer, add to the adjacency list
-for node1 in nodes[:n]:
-    for node2 in nodes[:n]:
-        if node1 != node2:
+for node1 in nodes:#[:n]:
+    for node2 in nodes:#[:n]:
+        if node1 != node2 and isinstance(node1,str) and isinstance(node2,str):
             print("Node1 Name: " + str(node1))
             print("Node2 Name: " + str(node2))
             node1_company = linkedin_data.loc[linkedin_data['Full Name'] == node1]['Company']
@@ -101,6 +101,10 @@ for node1 in nodes[:n]:
                 # Create the pandas DataFrame
                 df = pd.DataFrame(data, columns=['Node1', 'Node2','Company'])
                 employer_network = employer_network.append(df)
+'''
+import pickle
+#pickle.dump(employer_network, open( "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/employer_network.pkl", "wb" ))
+employer_network = pickle.load(open( "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/employer_network.pkl", "rb" ) )
 
 
 # In[15]:

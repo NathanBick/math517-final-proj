@@ -9,7 +9,10 @@ from pathlib import Path
 import os
 import glob
 import math
+import pickle
+
 def rstr(df): return df.shape, df.apply(lambda x: [x.unique()])
+
 import networkx as nx
 from matplotlib import pyplot as plt
 from networkx.algorithms.community import greedy_modularity_communities
@@ -19,9 +22,9 @@ from networkx.algorithms.community import greedy_modularity_communities
 
 
 # path may need to be changed
-# data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/final-proj/"
+data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
 #data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
-data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
+#data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
 
 extension = 'csv'
 os.chdir(data_dir)
@@ -102,9 +105,8 @@ for node1 in nodes:#[:n]:
                 df = pd.DataFrame(data, columns=['Node1', 'Node2','Company'])
                 employer_network = employer_network.append(df)
 '''
-import pickle
-#pickle.dump(employer_network, open( "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/employer_network.pkl", "wb" ))
-employer_network = pickle.load(open( "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/employer_network.pkl", "rb" ) )
+#pickle.dump(employer_network, open( data_dir + "employer_network.pkl", "wb" ))
+employer_network = pickle.load(open( data_dir + "employer_network.pkl", "rb" ) )
 
 
 # In[15]:
@@ -117,6 +119,8 @@ employer_network = pickle.load(open( "/Users/pamelakatali/Downloads/school/MATH5
 
 
 G=nx.from_pandas_edgelist(employer_network,"Node1","Node2",["Company"])
+print("Number of Edges: " + str(nx.number_of_edges(G)))
+print("Number of Nodes: " + str(nx.number_of_nodes(G)))
 
 
 # In[17]:

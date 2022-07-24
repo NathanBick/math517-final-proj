@@ -10,6 +10,8 @@ import os
 import glob
 import math
 import pickle
+import numpy as np
+from numpy import random
 
 def rstr(df): return df.shape, df.apply(lambda x: [x.unique()])
 
@@ -119,7 +121,7 @@ employer_network = pickle.load(open( data_dir + "employer_network.pkl", "rb" ) )
 # In[48]:
 
 
-G=nx.from_pandas_edgelist(employer_network,"Node1","Node2",["Company"])
+G = nx.from_pandas_edgelist(employer_network,"Node1","Node2",["Company"])
 print("Number of Edges: " + str(nx.number_of_edges(G)))
 print("Number of Nodes: " + str(nx.number_of_nodes(G)))
 
@@ -150,7 +152,7 @@ df = df.fillna(df.max().max())
 plt.figure(3,figsize=(12,12)) 
 kamada_pos = nx.kamada_kawai_layout(G, dist=df.to_dict())
 nx.draw(G, kamada_pos, cmap=plt.get_cmap('viridis'), node_color=values['Company'].cat.codes, with_labels=True, font_color='black')
-# plt.legend(scatterpoints=1)
+# plt.legend(scatterpoints=1) # need to somehow be able to set the label argument in draw() to be the company that the individual works at
 plt.show()
 
 
@@ -198,7 +200,7 @@ print("The largest component has", largest_subgraph)
 
 # for unweighted graphs, the clustering of a node is the fraction of possible triangles through that node that exist
 # need to noodle on this more to make sure the output of "1" is intuitive here
-print(nx.clustering(G))
+print('clustering coefficient:', nx.clustering(G))
 
 
 # In[78]:
@@ -232,9 +234,101 @@ print("The total number of nodes and edges is", nx.number_of_nodes(G), "and", nx
 # metric 6: number and size of communities in the graph
 
 c = greedy_modularity_communities(G)
-print('Number of ommmunities in the network:', len(c))
-print(c)
-    
+print('Number of communities in the network:', len(c))
+comm_lens = []
+for comm in c:
+    comm_lens.append(len(comm))
+print('Average community size:',np.mean(comm_lens))
+plt.hist(comm_lens)
+plt.show()
+
+
+# random graph model 
+# compute centrality metrics comapred to random graph
+
+n = 324
+m = 5005
+# generate random graph 
+nodes = np.arange(n)
+
+rand_g = nx.Graph()
+rand_g.add_nodes_from(nodes)
+
+for i in range(int(m)):
+    x = random.randint(n)
+    y = random.randint(n)
+    rand_g.add_edge(x, y)
+
+
+cent = []
+for k,v in nx.degree_centrality(G).items():
+    cent.append(v)
+print('Degree centrality:')
+print('G - ',np.mean(cent))
+
+cent = []
+for k,v in nx.degree_centrality(rand_g).items():
+    cent.append(v)
+print('random - ',np.mean(cent))
+print()
+
+cent = []
+for k,v in nx.eigenvector_centrality(G).items():
+    cent.append(v)
+print('Eienvector centrality:')
+print('G - ',np.mean(cent))
+
+cent = []
+for k,v in nx.eigenvector_centrality(rand_g).items():
+    cent.append(v)
+print('random -', np.mean(cent))
+print()
+
+cent = []
+for k,v in nx.closeness_centrality(G).items():
+    cent.append(v)
+print('Closeness centrality:')
+print('G - ',np.mean(cent))
+
+cent = []
+for k,v in nx.closeness_centrality(rand_g).items():
+    cent.append(v)
+print('random -', np.mean(cent))
+print()
+
+cent = []
+for k,v in nx.betweenness_centrality(G).items():
+    cent.append(v)
+print('Betweenness centrality:')
+print('G - ',np.mean(cent))
+
+cent = []
+for k,v in nx.betweenness_centrality(rand_g).items():
+    cent.append(v)
+print('random -', np.mean(cent))
+
+
+# clusteirng coefficient
+print()
+cent = []
+for k,v in nx.clustering(G).items():
+    cent.append(v)
+print('clustering coefficient:')
+print('G - ',np.mean(cent))
+
+cent = []
+for k,v in nx.clustering(rand_g).items():
+    cent.append(v)
+print('random -', np.mean(cent))
+
+
+# Assortativity 
+
+
+#print(nx.eigenvector_centrality(G))
+#print(nx.katz_centrality(G))
+#print(nx.closeness_centrality(G))
+#print(nx.betweness_centrality(G))
 # other questions that could be interesting to answer: what proportion of individuals overlap in their
 # company / education / job title connections (i.e. what proportion of those are connected both by company
 # and education)?

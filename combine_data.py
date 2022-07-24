@@ -22,8 +22,8 @@ from networkx.algorithms.community import greedy_modularity_communities
 
 
 # path may need to be changed
-data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
-#data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
+# data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
+data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
 #data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
 
 extension = 'csv'
@@ -84,6 +84,7 @@ test.values[0]
 
 # In[12]:
 
+
 '''
 employer_network = pd.DataFrame()
 n = 100
@@ -125,10 +126,31 @@ print("Number of Nodes: " + str(nx.number_of_nodes(G)))
 
 # In[17]:
 
-
+# first try
 plt.figure(3,figsize=(12,12)) 
 pos = nx.spring_layout(G,k=10/math.sqrt(G.order()))
 nx.draw(G, pos, with_labels=True)
+plt.show()
+
+# second try -- try and make the visualization more organized and readable!
+values = employer_network.drop('Node2', axis=1).groupby(by=['Node1','Company'], as_index=False).first()
+values = values.set_index('Node1')
+values = values.reindex(G.nodes())
+
+values['Company'] = pd.Categorical(values['Company'])
+values['Company'].cat.codes
+
+df = pd.DataFrame(index=G.nodes(), columns=G.nodes())
+for row, data in nx.shortest_path_length(G):
+    for col, dist in data.items():
+        df.loc[row,col] = dist
+
+df = df.fillna(df.max().max())
+
+plt.figure(3,figsize=(12,12)) 
+kamada_pos = nx.kamada_kawai_layout(G, dist=df.to_dict())
+nx.draw(G, kamada_pos, cmap=plt.get_cmap('viridis'), node_color=values['Company'].cat.codes, with_labels=True, font_color='black')
+# plt.legend(scatterpoints=1)
 plt.show()
 
 

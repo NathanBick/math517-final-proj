@@ -24,9 +24,9 @@ from networkx.algorithms.community import greedy_modularity_communities
 
 
 # path may need to be changed
-data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
+#data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
 #data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
-#data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
+data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
 
 extension = 'csv'
 os.chdir(data_dir)
@@ -239,8 +239,8 @@ comm_lens = []
 for comm in c:
     comm_lens.append(len(comm))
 print('Average community size:',np.mean(comm_lens))
-plt.hist(comm_lens)
-plt.show()
+#plt.hist(comm_lens)
+#plt.show()
 
 
 # random graph model 
@@ -261,75 +261,139 @@ for i in range(int(m)):
 
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
+
 for k,v in nx.degree_centrality(G).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
+
 print('Degree centrality:')
 print('G - ',np.mean(cent))
+print(max_cent_k,':',max_cent_v)
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.degree_centrality(rand_g).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('random - ',np.mean(cent))
 print()
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.eigenvector_centrality(G).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('Eienvector centrality:')
 print('G - ',np.mean(cent))
+print(max_cent_k,':',max_cent_v)
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.eigenvector_centrality(rand_g).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('random -', np.mean(cent))
 print()
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.closeness_centrality(G).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('Closeness centrality:')
 print('G - ',np.mean(cent))
+print(max_cent_k,':',max_cent_v)
 
-cent = []
+
+
 for k,v in nx.closeness_centrality(rand_g).items():
     cent.append(v)
+
 print('random -', np.mean(cent))
 print()
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.betweenness_centrality(G).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('Betweenness centrality:')
 print('G - ',np.mean(cent))
+print(max_cent_k,':',max_cent_v)
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.betweenness_centrality(rand_g).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('random -', np.mean(cent))
 
 
 # clusteirng coefficient
 print()
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.clustering(G).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('clustering coefficient:')
 print('G - ',np.mean(cent))
+print(max_cent_k,':',max_cent_v)
 
 cent = []
+max_cent_k = None
+max_cent_v = 0
 for k,v in nx.clustering(rand_g).items():
     cent.append(v)
+    if v > max_cent_v:
+        max_cent_k = k
+        max_cent_v = v
 print('random -', np.mean(cent))
-
+print()
 
 # Assortativity 
 import networkx.algorithms.community as nx_comm
 
 # degree assortativity 
-nx.degree_assortativity_coefficient(G)
+print('Degree assortativity:',nx.degree_assortativity_coefficient(G))
 
 # modularity
-nx_comm.modularity(G, nx_comm.label_propagation_communities(G))
+print('Modularity:',nx_comm.modularity(G, nx_comm.label_propagation_communities(G)))
+
+#get components
+components = list(nx.connected_components(G))
+
+largest_comp_size = 0
+for c in components:
+    if len(c) > largest_comp_size:
+        largest_comp_size = len(c)
+print(largest_comp_size)
+print(len(components))
 
 
 #print(nx.eigenvector_centrality(G))

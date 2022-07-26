@@ -24,8 +24,8 @@ from networkx.algorithms.community import greedy_modularity_communities
 
 
 # path may need to be changed
-# data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
-data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
+data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
+#data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
 #data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
 
 extension = 'csv'
@@ -323,6 +323,13 @@ print('random -', np.mean(cent))
 
 
 # Assortativity 
+import networkx.algorithms.community as nx_comm
+
+# degree assortativity 
+nx.degree_assortativity_coefficient(G)
+
+# modularity
+nx_comm.modularity(G, nx_comm.label_propagation_communities(G))
 
 
 #print(nx.eigenvector_centrality(G))

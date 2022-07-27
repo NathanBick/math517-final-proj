@@ -24,9 +24,9 @@ from networkx.algorithms.community import greedy_modularity_communities
 
 
 # path may need to be changed
-#data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/"
-#data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/"
-data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/"
+#data_dir = "/Users/NathanBick/Documents/Graduate School/MATH517 - Social Network Analysis/MATH517-final-proj/data/"
+#data_dir = "/Users/davidanderson/Desktop/angela/georgetown/social-networks/math517-final-proj/data/"
+data_dir = "/Users/pamelakatali/Downloads/school/MATH517/math517-final-proj/data/"
 
 extension = 'csv'
 os.chdir(data_dir)
